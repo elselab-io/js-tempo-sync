@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tempo-sync Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .timestamp {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 5px;
+            background: #007bff;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .timestamp.future {
+            background: #28a745;
+        }
+        
+        .timestamp.old {
+            background: #6c757d;
+        }
+        
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #0056b3;
+        }
+        
+        button:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        
+        .status.active {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.inactive {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .code {
+            background: #f1f3f4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .feed-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .feed-content {
+            flex: 1;
+        }
+        
+        .feed-meta {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>tempo-sync Demo</h1>
+        <p>Lightweight JavaScript library for automatic relative time updates</p>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">Start tempo-sync</button>
+        <button id="stopBtn" disabled>Stop tempo-sync</button>
+        <button id="addTimestamp">Add New Timestamp</button>
+    </div>
+
+    <div id="status" class="status inactive">
+        Status: Inactive
+    </div>
+
+    <div class="demo-section">
+        <h3>📅 Various Time Ranges</h3>
+        <p>These timestamps update automatically at intelligent intervals:</p>
+        
+        <!-- Recent timestamps (update every second) -->
+        <span class="timestamp" data-tempo="">Just now</span>
+        <span class="timestamp" data-tempo="">30 seconds ago</span>
+        
+        <!-- Minute-old timestamps (update every minute) -->
+        <span class="timestamp" data-tempo="">2 minutes ago</span>
+        <span class="timestamp" data-tempo="">15 minutes ago</span>
+        
+        <!-- Hour-old timestamps (update every hour) -->
+        <span class="timestamp" data-tempo="">1 hour ago</span>
+        <span class="timestamp" data-tempo="">3 hours ago</span>
+        
+        <!-- Day-old timestamps (update daily) -->
+        <span class="timestamp old" data-tempo="">2 days ago</span>
+        <span class="timestamp old" data-tempo="">1 week ago</span>
+        <span class="timestamp old" data-tempo="">1 month ago</span>
+        <span class="timestamp old" data-tempo="">1 year ago</span>
+        
+        <!-- Future timestamps -->
+        <span class="timestamp future" data-tempo="">In 5 minutes</span>
+        <span class="timestamp future" data-tempo="">In 2 hours</span>
+    </div>
+
+    <div class="demo-section">
+        <h3>📱 Social Media Feed</h3>
+        <p>Example of tempo-sync in a typical social media feed:</p>
+        
+        <div class="feed-item">
+            <div class="avatar">JS</div>
+            <div class="feed-content">
+                <strong>John Smith</strong> shared a photo
+                <div class="feed-meta">
+                    <span data-tempo="">5 minutes ago</span> • 12 likes
+                </div>
+            </div>
+        </div>
+        
+        <div class="feed-item">
+            <div class="avatar">AM</div>
+            <div class="feed-content">
+                <strong>Alice Miller</strong> posted an update
+                <div class="feed-meta">
+                    <span data-tempo="">1 hour ago</span> • 8 comments
+                </div>
+            </div>
+        </div>
+        
+        <div class="feed-item">
+            <div class="avatar">BJ</div>
+            <div class="feed-content">
+                <strong>Bob Johnson</strong> liked your post
+                <div class="feed-meta">
+                    <span data-tempo="">3 hours ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h3>🔧 Usage</h3>
+        <div class="code">
+&lt;!-- Add data-tempo attribute to any element --&gt;
+&lt;span data-tempo="2024-01-15T10:30:00Z"&gt;2 hours ago&lt;/span&gt;
+
+&lt;script&gt;
+// Initialize once
+tempoSync.observe();
+&lt;/script&gt;
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h3>⚡ Performance Benefits</h3>
+        <ul>
+            <li><strong>One Timer:</strong> All timestamps share a single intelligent timer</li>
+            <li><strong>Smart Intervals:</strong> Updates "seconds ago" every second, "hours ago" every hour</li>
+            <li><strong>Auto-cleanup:</strong> Automatically stops tracking removed elements</li>
+            <li><strong>Lightweight:</strong> Only 1.5KB minified</li>
+        </ul>
+    </div>
+
+    <script src="../src/tempo-sync.js"></script>
+    <script>
+        // Initialize timestamps with actual dates
+        function initializeTimestamps() {
+            const now = new Date();
+            const timestamps = [
+                { selector: '[data-tempo=""]:nth-of-type(1)', offset: -10000 }, // 10 seconds ago
+                { selector: '[data-tempo=""]:nth-of-type(2)', offset: -30000 }, // 30 seconds ago
+                { selector: '[data-tempo=""]:nth-of-type(3)', offset: -2 * 60 * 1000 }, // 2 minutes ago
+                { selector: '[data-tempo=""]:nth-of-type(4)', offset: -15 * 60 * 1000 }, // 15 minutes ago
+                { selector: '[data-tempo=""]:nth-of-type(5)', offset: -1 * 60 * 60 * 1000 }, // 1 hour ago
+                { selector: '[data-tempo=""]:nth-of-type(6)', offset: -3 * 60 * 60 * 1000 }, // 3 hours ago
+                { selector: '[data-tempo=""]:nth-of-type(7)', offset: -2 * 24 * 60 * 60 * 1000 }, // 2 days ago
+                { selector: '[data-tempo=""]:nth-of-type(8)', offset: -7 * 24 * 60 * 60 * 1000 }, // 1 week ago
+                { selector: '[data-tempo=""]:nth-of-type(9)', offset: -30 * 24 * 60 * 60 * 1000 }, // 1 month ago
+                { selector: '[data-tempo=""]:nth-of-type(10)', offset: -365 * 24 * 60 * 60 * 1000 }, // 1 year ago
+                { selector: '[data-tempo=""]:nth-of-type(11)', offset: 5 * 60 * 1000 }, // In 5 minutes
+                { selector: '[data-tempo=""]:nth-of-type(12)', offset: 2 * 60 * 60 * 1000 }, // In 2 hours
+            ];
+
+            // Feed timestamps
+            const feedTimestamps = [
+                { selector: '.feed-item:nth-child(1) [data-tempo]', offset: -5 * 60 * 1000 }, // 5 minutes ago
+                { selector: '.feed-item:nth-child(2) [data-tempo]', offset: -1 * 60 * 60 * 1000 }, // 1 hour ago
+                { selector: '.feed-item:nth-child(3) [data-tempo]', offset: -3 * 60 * 60 * 1000 }, // 3 hours ago
+            ];
+
+            [...timestamps, ...feedTimestamps].forEach(({ selector, offset }) => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    const timestamp = new Date(now.getTime() + offset);
+                    element.setAttribute('data-tempo', timestamp.toISOString());
+                }
+            });
+        }
+
+        // Control buttons
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const addBtn = document.getElementById('addTimestamp');
+        const status = document.getElementById('status');
+
+        let isActive = false;
+
+        function updateStatus() {
+            if (isActive) {
+                status.textContent = 'Status: Active - Timestamps updating automatically';
+                status.className = 'status active';
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+            } else {
+                status.textContent = 'Status: Inactive - Click "Start tempo-sync" to begin';
+                status.className = 'status inactive';
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+            }
+        }
+
+        startBtn.addEventListener('click', () => {
+            tempoSync.observe();
+            isActive = true;
+            updateStatus();
+        });
+
+        stopBtn.addEventListener('click', () => {
+            tempoSync.disconnect();
+            isActive = false;
+            updateStatus();
+        });
+
+        addBtn.addEventListener('click', () => {
+            const container = document.querySelector('.demo-section');
+            const newTimestamp = document.createElement('span');
+            newTimestamp.className = 'timestamp';
+            newTimestamp.setAttribute('data-tempo', new Date().toISOString());
+            newTimestamp.textContent = 'Just added';
+            container.appendChild(newTimestamp);
+            
+            // If tempo-sync is active, it will automatically pick up the new element
+        });
+
+        // Initialize the demo
+        initializeTimestamps();
+        updateStatus();
+        
+        // Auto-start for demo purposes
+        setTimeout(() => {
+            if (!isActive) {
+                startBtn.click();
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
