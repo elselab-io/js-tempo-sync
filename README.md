@@ -322,7 +322,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
     <img src="https://elselab.io/wp-content/uploads/2024/04/Elselab-Logo.png" alt="Else Lab" width="200">
   </a>
   
-  **Made with ❤️ by [Else Lab](https://github.com/elselabdev)**
+  **Made with ❤️ by [Else Lab](https://github.com/elselab-io)**
   
-  [Website](https://elselab.io) • [GitHub](https://github.com/elselabdev) • [Contact](mailto:contact@elselab.io)
+  [Website](https://elselab.io) • [GitHub](https://github.com/elselab-io) • [Contact](mailto:contact@elselab.io)
 </div>
